@@ -2774,7 +2774,7 @@ public class principal extends javax.swing.JFrame {
                         id = partes[5];
                         carrera = partes[6];
                         sueldo = partes[7];
-                    } else {
+                    } else if(rol.equals("registro")) {
                         usuarioActual = partes[0];
                         contraseñaActual = partes[1];
                         nombre = partes[3];
@@ -2992,32 +2992,7 @@ public class principal extends javax.swing.JFrame {
         passDm.setText(pass);
         passDm.setForeground(foreground);
         sueldoDm.setValue(val);
-        
-        docenteCB.removeAllItems();
-        
-        try {
-            boolean encontrado;
-            try ( FileReader fr = new FileReader("./usuarios.txt");  BufferedReader br = new BufferedReader(fr)) {
-                String linea;
-                encontrado = false;
-                while ((linea = br.readLine()) != null) {
-                    var partes = linea.split("\\|");
-                    String rol = partes[2];
-                    String nombre = partes[3] + " " + partes[4];
-
-                    if (rol.equals("docente")) {
-                        JComboBox comboBox = docenteCB;
-                        comboBox.addItem(nombre);
-                    }
-
-                }
-            }
-
-        } catch (IOException e) {
-        }
-        
-        
-
+       
     }//GEN-LAST:event_modDMouseClicked
 
     private void crearDP1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crearDP1MouseEntered
@@ -3041,7 +3016,6 @@ public class principal extends javax.swing.JFrame {
 
     private void deleteDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteDMouseClicked
         // TODO add your handling code here:
-  
         bg.setVisible(false);
         registroP.setVisible(false);
         modD1.setVisible(false);
@@ -3099,6 +3073,7 @@ public class principal extends javax.swing.JFrame {
 
     private void crearDBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crearDBMouseClicked
         // TODO add your handling code here:
+        DefaultTableModel docentes1 = (DefaultTableModel) jtableD.getModel();
 
         int s = (int) sueldoD.getValue();
         if (IdD.getText().equals("") || nombreD.getText().equals("") || userD.getText().equals("") || String.valueOf(passD.getPassword()).equals("") || s <= 0) {
@@ -3117,9 +3092,14 @@ public class principal extends javax.swing.JFrame {
                         + docenteCB2.getSelectedItem() + "|"
                         + sueldoD.getValue() + "\n");
 
-                         String datos[] = {IdD,, nombre1, apellido1};
-
+                         String datos[] = {IdD.getText(), nombreD.getText(), apellidoD.getText()};
                         docentes1.addRow(datos);
+                        
+                        JComboBox comboBox = docenteCB;
+                        String name = nombreD.getText()+" "+apellidoD.getText();
+                        comboBox.addItem(name);
+                        
+                        
                 writer.close();
                 Docentes d = new Docentes(IdD.getText(),
                         String.valueOf(passD.getPassword()),
@@ -3145,35 +3125,7 @@ public class principal extends javax.swing.JFrame {
         String carrera1 = "";
         String usuarioActual1 = "";
         String contraseñaActual1 = "";
-        DefaultTableModel docentes1 = (DefaultTableModel) jtableD.getModel();
 
-        try {
-            try ( FileReader fr = new FileReader(archivoUsuarios);  BufferedReader br = new BufferedReader(fr)) {
-                String linea;
-                while ((linea = br.readLine()) != null) {
-                    var partes = linea.split("\\|");
-
-                    rol = partes[2];
-
-                    if (rol.equals("docente")) {
-                        usuarioActual1 = partes[0];
-                        contraseñaActual1 = partes[1];
-                        nombre1 = partes[3];
-                        apellido1 = partes[4];
-                        id1 = partes[5];
-                        carrera1 = partes[6];
-                        sueldo1 = partes[7];
-                        String datos[] = {id1, nombre1, apellido1};
-
-                        docentes1.addRow(datos);
-                    }
-                }
-            }
-
-        } catch (IOException e) {
-        }
-        
-        
         IdD.setForeground(Color.gray);
         nombreD.setForeground(Color.gray);
         apellidoD.setForeground(Color.gray);
@@ -4023,41 +3975,6 @@ public class principal extends javax.swing.JFrame {
 
     private void docenteCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_docenteCBActionPerformed
         // TODO add your handling code here:
-
-        String usuario = "";
-        String contraseña = "";
-        String archivoUsuarios = "./usuarios.txt";
-        String rol1 = "";
-        String nombre1 = "";
-        String apellido1 = "";
-        String sueldo1 = "";
-        String id1 = "";
-        String carrera1 = "";
-        String usuarioActual1 = "";
-        String contraseñaActual1 = "";
-
-        String nombre = (String) docenteCB.getSelectedItem();
-        try {
-            FileReader archivoLectura = new FileReader("./usuarios.txt");
-            BufferedReader lectorArchivo = new BufferedReader(archivoLectura);
-            String linea;
-            while ((linea = lectorArchivo.readLine()) != null) {
-                var datos = linea.split("\\|");
-
-                String name = datos[3] + " " + datos[4];
-                if (name.equals(nombre)) {
-                    idDm.setText(datos[5]);
-                    nombreDm.setText(datos[3]);
-                    apellidoDm.setText(datos[4]);
-                    userDm.setText(datos[0]);
-                    passDm.setText(datos[1]);
-                    break;
-                }
-            }
-            lectorArchivo.close();
-            archivoLectura.close();
-        } catch (IOException ex) {
-        }
 
     }//GEN-LAST:event_docenteCBActionPerformed
 
